@@ -109,26 +109,42 @@
             $s = bin2hex( random_bytes(8) ) ;
             $sql = "INSERT INTO demo VALUES( UUID(), $x, '$s' ) " ;
             try {
-                $connection->query( $sql ) ;
-                echo "INSERT OK" ;
+               $connection->query( $sql ) ;
+               echo "INSERT OK" ;
             }
             catch( PDOException $ex ) {
-                echo $ex->getMessage() ;
+               echo $ex->getMessage() ;
             }
             ?>
         </p>
         <p>
             DML. SELECT<br/>
             <?php
-            $sql = "SELECT * FROM `demo` " ; // ``(MySQL) - аналог [] (MS SQL)
+            $sql = "SELECT * FROM `demo` " ; // Делаем запрос на выборку (можно добавить WHERE `demo`.`var_int` % 2 = 0)
+            // Запрашиваем имена всех столбцов таблицы
+            $sql_columns = "SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME='demo'" ;
             try {
-                $res = $connection->query( $sql ) ; // ~table (таблица рез-тов)
-                while( $row = $res->fetch( PDO::FETCH_ASSOC ) ) { // строка таблицы
-                    // print_r( $row ); // данные дублируются - по индексу и по имени
-                    echo "{$row['id']} {$row['val_str']} <br/>" ;
-                } // PDO::FETCH_ASSOC - только с именами, 
-                  // PDO::FETCH_NUM - только с индексами,
-                  // PDO::FETCH_BOTH - дублирование (по умолчанию)
+                $res_col = $connection->query( $sql_columns ) ;                       // Получаем "таблицу" рез-тов (имена всех столбцов таблицы)
+                echo "<table class='demo' border=1.5 cellspacing=0 cellpadding=0 >" ; // Рисуем таблицу
+                    echo "<caption><b>$sql</b></caption>"; 
+                    echo "<tr class='demo-header'>" ;                                 // Шапка таблицы
+                        while( $col = $res_col->fetch( PDO::FETCH_NUM ) ) 
+                            echo "<th>$col[3]</th>" ;                                 // $col[3] - выводим имена всех столбцов таблицы
+                    echo "</tr>" ;
+                    echo "<tr>" ;                                                     // Данные таблицы
+                        $res_col = $connection->query( $sql_columns ) ;               // Обновляем $res_col
+                        while( $col = $res_col->fetch( PDO::FETCH_NUM ) ) {           // Проходим по всем столбцам таблицы
+                            $res = $connection->query( $sql ) ;                       // ~table (таблица рез-тов)
+                            echo "<td>" ;
+                            while( $row = $res->fetch( PDO::FETCH_ASSOC ) )           // Строка таблицы
+                                echo "<div class='demo-data'>{$row[$col[3]]}</div>" ; // Заполняем каждый столбец таблицы данными
+                            echo "</td>" ;
+                        }
+                    echo "</tr>" ;
+                echo "</table>" ;
+                // PDO::FETCH_ASSOC - только имена, 
+                // PDO::FETCH_NUM - только индексы,
+                // PDO::FETCH_BOTH - дублирование (по умолчанию)
             }
             catch( PDOException $ex ) {
                 echo $ex->getMessage() ;
@@ -136,10 +152,10 @@
             ?>
         </p>
         
-        <!-- 
-        Д.З. Реализовать запрос к БД на выдачу данных
-        отобразить данные в виде таблицы (HTML)
-        ** предполагать, что количество и названия полей заранее не известны
+        <!-- Д.З. 
+        ✅ Реализовать запрос к БД на выдачу данных
+        ✅ Отобразить данные в виде таблицы (HTML)
+        ✅ ** Предполагать, что количество и названия полей заранее не известны
         +--------------------------------------+---------+------------------+
         | id                                   | var_int | val_str          |
         +--------------------------------------+---------+------------------+

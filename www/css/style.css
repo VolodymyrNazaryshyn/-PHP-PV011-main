@@ -1,12 +1,17 @@
+/* Style for _layout.php */
+.logo {
+    max-height: 50px;
+}
+/* ------------------------------- */
 /* Style for footer.php */
 html,
 body {
     height: 100%;
 }
 .wrapper {
-    min-height: 100%;
     display: flex;
     flex-direction: column;
+    min-height: 100%;
 }
 main {
     flex: 1 1 auto;
@@ -56,12 +61,31 @@ footer {
     text-align: center;
 }
 /* ------------------------------- */
-.logo {
-    max-height: 50px;
-}
+/* Style for formdata.php */
 .error {
     color: red;
 }
 .success {
     color: green;
+}
+/* ------------------------------- */
+/* Style for db.php */
+.demo {
+    box-shadow: 0 5px 15px black;
+}
+.demo-header {
+    background-color: #CC9933;
+}
+.demo-header th {
+    padding: 5px;
+}
+.demo-data {
+    border-top: 1px solid black;
+    padding: 10px;
+}
+.demo-data:nth-child(odd) {
+    background-color: #FF9966;
+}
+.demo-data:nth-child(even) {
+    background-color: #FFCC99;
 }
