@@ -125,7 +125,7 @@
             $sql_columns = "SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME='demo'" ;
             try {
                 $res_col = $connection->query( $sql_columns ) ;                       // Получаем "таблицу" рез-тов (имена всех столбцов таблицы)
-                echo "<table class='demo' border=1.5 cellspacing=0 cellpadding=0 >" ; // Рисуем таблицу
+                echo "<table class='demo' align=center border=1.5 cellspacing=0 cellpadding=0 >" ; // Рисуем таблицу
                     echo "<caption><b>$sql</b></caption>"; 
                     echo "<tr class='demo-header'>" ;                                 // Шапка таблицы
                         while( $col = $res_col->fetch( PDO::FETCH_NUM ) ) 

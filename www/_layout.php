@@ -8,14 +8,18 @@
     <title>PV011</title>
 </head>
 <body>
-    <nav>
+    <header>
         <img src="/img/php.png" alt="logo" class="logo" />
-        <a href="/basics">Введение в РНР</a>
-        <a href="/fundamentals">Основы РНР</a>
-        <a href="/layout">Шаблонизация</a>
-        <a href="/formdata">Данные форм</a>
-        <a href="/db">Работа с БД</a>
-    </nav>
+        <nav>
+            <ul>
+                <li><a href="/basics">Введение в РНР</a></li>
+                <li><a href="/fundamentals">Основы РНР</a></li>
+                <li><a href="/layout">Шаблонизация</a></li>
+                <li><a href="/formdata">Данные форм</a></li>
+                <li><a href="/db">Работа с БД</a></li>
+            </ul>
+        </nav>
+    </header>
 
     <!-- Render body -->
     <?php

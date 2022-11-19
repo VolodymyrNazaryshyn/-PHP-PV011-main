@@ -16,7 +16,7 @@
         <form method="post" enctype="multipart/form-data">
             <label>файл: <input type="file" name="formfile" /></label>
             <br/>
-            <label>Введите описание: <input name="descr" value="A file" /></label>
+            <label>Введите описание: <input name="descr" value="A file" /></label><br/>
             <label>Введите описание: <input disabled name="bescr" value="B file" /></label>
             <br/>
             <button>Послать файл</button>
