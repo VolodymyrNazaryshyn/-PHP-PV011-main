@@ -6,24 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/css/style.css" />
     <title>PV011</title>
-    <style>
-    html,
-    body {
-        height: 100%;
-    }
-    .wrapper {
-        min-height: 100%;
-        display: flex;
-        flex-direction: column;
-    }
-    main {
-        flex: 1 1 auto;
-    }
-    footer {
-        border-top: 1px solid gray;
-        padding: 10px 0 10px;
-    }
-    </style>
 </head>
 <body>
     <nav>
@@ -32,9 +14,8 @@
         <a href="/fundamentals">Основы РНР</a>
         <a href="/layout">Шаблонизация</a>
         <a href="/formdata">Данные форм</a>
+        <a href="/db">Работа с БД</a>
     </nav>
-
-    <h1>PHP</h1>
 
     <!-- Render body -->
     <?php
@@ -44,6 +25,7 @@
         case 'basics'       : 
         case 'fundamentals' : 
         case 'layout'       : 
+        case 'db'           : 
         case 'formdata'     : include "{$path_parts[1]}.php" ; break ;
         default             : include "404.php";
     }
