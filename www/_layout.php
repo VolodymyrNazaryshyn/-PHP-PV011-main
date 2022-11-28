@@ -19,6 +19,7 @@
                 <li><a href="/db">Работа с БД</a></li>
             </ul>
         </nav>
+
         <?php if( is_array( $_AUTH ) ) { ?>
             <b>Hello</b>
         <?php } else {  ?>
@@ -26,10 +27,11 @@
                 <label><input name="userlogin" placeholder="login" /></label>
                 <label><input name="userpassw" type="password" /></label>
                 <button>Log in</button>
+                <button type="button" onclick="location = '/register'">Register</button>
             </form>
             <?php if( is_string( $_AUTH ) ) echo $_AUTH ; ?>
         <?php }  ?>
-        <button type="button" onclick="location = '/register'">Register</button>
+        
     </header>
 
     <!-- Render body -->
