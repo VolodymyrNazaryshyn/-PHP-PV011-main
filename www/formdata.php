@@ -56,14 +56,14 @@
 
     <?php
         $ext_array = ['png', 'jpg', 'gif', 'jpeg']; // Массив доступных расширений
-    
+        
         if( isset( $_FILES['formfile'] ) ) { // Передача есть
             if( $_FILES['formfile']['error'] === 0 ) {  // Нет ошибки
                 if( $_FILES['formfile']['size'] > 0 ) { // Есть данные
                     $full_path = $_FILES['formfile']['full_path'];
                     $position = strrpos( $full_path, '.' ) ;
                     $extension = substr( $full_path, $position + 1 ) ;
-                
+                    
                     if( in_array($extension, $ext_array)  ) { // Присутствие в массиве значения
                         move_uploaded_file( 
                             $_FILES['formfile']['tmp_name'],

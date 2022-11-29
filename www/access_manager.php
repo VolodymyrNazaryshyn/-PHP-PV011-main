@@ -15,13 +15,13 @@ if( is_file( $local_path ) ) {          // запрос - существующи
 
 $path_parts = explode( '/', $path ) ;  // ~split - разбивает строку по разделителю
 
-// Middleware
-include "dbms.php";
-if( empty( $connection )) {
-    echo "DB error";
+// ~MiddleWare
+include "dbms.php" ;
+if( empty( $connection ) ) {
+    echo "DB error"; 
     exit ;
 }
-include "auth.php";
+include "auth.php" ;
 
 // ~Controllers
 $controller_file = "controllers/" . $path_parts[1] . "_controller.php" ; // [1] - первая непустая часть (суть контроллер)

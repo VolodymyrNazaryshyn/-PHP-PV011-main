@@ -8,7 +8,7 @@ html,
 body {
     height: 100%;
     margin: 30px 0 0 0;
-    background-color: lightgrey;
+	background-color: lightgrey;
     font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
 }
 .main_wrapper {
@@ -153,7 +153,7 @@ footer {
 }
 /* ------------------------------- */
 /* Style for register.php */
-.reg-form-container {
+ .reg-form-container {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -225,4 +225,20 @@ footer {
 .reg-error {
     color: red;
     font-weight: 900;
+}
+.reg-dialog {
+    background-color: #ab98ca;
+    border: 1px solid black;
+    border-radius: 5px;
+    box-shadow: 0px 0px 5px black;
+    height: 150px;
+    margin: auto;
+    width: 150px;
+}
+.reg-ok {
+    color: white;
+    font-weight: 900;
+    letter-spacing: 2px;
+    text-shadow: 1px 1px 1px blue;
+    margin: 60px 0px 0px 40px;
 }

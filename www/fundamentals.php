@@ -53,18 +53,18 @@
             $arr[] = 10;     // push - добавление в массив
             $arr[] = 20;     // без указания индекса - присваиваются
             $arr[] = 30;     // порядковые числовые индексы
-
+        
             foreach($arr as $val) { // for-of (по значениям)
                 echo "$val <br/>";
             }
-
+        
             $arr[10] = 'ten'; // указание индекса-ключа
             $arr['five'] = 5;
             $arr[] = 'next';
             $arr['2'] = 200; // 2 (число) '2' (строка) - одно и то же
             $arr[true] = 'true'; // true == 1
             $arr['true'] = true;
-
+        
             foreach($arr as $key => $val) { // по парам ключ-значение
                 echo "arr[$key] = $val <br/>";
             }
@@ -91,9 +91,9 @@
             // $arr3['auth']['pass']
             const CONST_VALUE = 100500; // константа без $, рекомендуется CAPITAL_CASE
             echo CONST_VALUE, '<br/>';
-
-            echo makeHello(), ' ', makeHello("User"), '<br/>';
-
+        
+            echo makeHello(), '<br/>', makeHello("User"), '<br/>';
+        
             // принцип "поднятия" работает - можно вызывать до определения (в файле)
             function makeHello($user = "Admin") { // значение по умолчанию есть
                 global $x; // для использования глобальной пер. указываем global
