@@ -2,6 +2,7 @@
 $_CONTEXT = [] ;   // наши глобальные данные - контекст запроса
 $path = explode( '?', $_SERVER[ 'REQUEST_URI' ] )[0] ;     // адрес запроса - начало маршрутизации
 $_CONTEXT[ 'path' ] = $path ;   // сохраняем в контексте для доступа из других файлов
+$_CONTEXT[ 'image_extensions' ] = ['.png','.jpg','.gif','.jpeg','.svg'] ; // Массив доступных расширений изображений
 /* Создание диспетчера доступа приводит к тому, что запросы к файлам,
    которые раньше автоматически "отдавал" Apache, теперь приходят
    к нам 
@@ -54,6 +55,9 @@ function flush_file( $filename ) {
         case 'gif' :
         case 'ico' :
             $content_type = "image/$ext" ; 
+            break ;
+        case 'svg' :
+            $content_type = "image/svg+xml" ; 
             break ;
 
         default:  return false ;               // недопустимое расширение - не отдаем файл

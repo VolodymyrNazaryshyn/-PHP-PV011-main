@@ -22,6 +22,11 @@ $reg_error = [
     'email_err' => [
         0 => 'Empty email',
         1 => 'Email doesn\'t follow the pattern (example: volodimir@gmail.com, Alex@mail.odessa.ua)'
+    ],
+    'file_err' => [
+        0 => 'File without type not supported',
+        1 => "Invalid extension, choose from '.png', '.jpg', '.gif', '.jpeg', '.svg'",
+        2 => 'File (avatar) uploading error'
     ]
 ];
 
@@ -72,7 +77,7 @@ case 'POST' :
     else if( empty( $_POST['email'] ) ) {
         $_SESSION[ 'reg_error' ] = $reg_error['email_err'][0] ;
     }
-    else if( !preg_match( "/^[A-z][A-z\d_]{3,16}@([a-z]{1,10}\.){1,5}[a-z]{2,3}$/", $_POST['email'] ) ) {
+    else if( !preg_match( "/^[A-z][A-z\d_\.]{3,30}@([a-z]{1,10}\.){1,5}[a-z]{2,3}$/", $_POST['email'] ) ) {
         $_SESSION[ 'reg_error' ] = $reg_error['email_err'][1] ;
     } else {
         try {
@@ -100,18 +105,36 @@ case 'POST' :
                 // есть переданный файл
                 $dot_position = strrpos( $_FILES['avatar']['name'], '.' ) ;  // strRpos ~ lastIndexOf
                 if( $dot_position === -1 ) {  // нет расширения у файла
-                    $_SESSION[ 'reg_error' ] = "File without type not supported" ;
+                    $_SESSION[ 'reg_error' ] = $reg_error['file_err'][0] ;
                 }
                 else {
                     $extension = substr( $_FILES['avatar']['name'], $dot_position ) ;  // расширение файла с точкой (".png")
-                    /* Д.З. Загрузка аватарки:
-                        проверить расширение файла на допустимый перечень
-                        сгенерировать случайное имя файла, сохранить расширение
-                        загрузить файл в папку www/avatars
-                        его имя добавить в параметры SQL-запроса и передать в БД
+                    // echo $extension ; exit ;
+
+                    /*  Загрузка аватарки:
+                    	+ проверить расширение файла на допустимый перечень (изображения)
+                    	+ сгенерировать случайное имя файла, сохранить расширение
+                    	+ загрузить файл в папку www/avatars
+                    	+ его имя добавить в параметры SQL-запроса и передать в БД
                     */
 
-                    // echo $extension ; exit ;
+                    if( ! in_array( $extension, ['.png','.jpg','.gif','.jpeg','.svg'] ) ) {
+                        $_SESSION[ 'reg_error' ] = $reg_error['file_err'][1] ;
+                    }
+                    else {
+                        $avatar_name = $_FILES['avatar']['name'] ;
+                        // убеждаемся, что в имени файла нету ../ (защита от DT)
+                        if(str_contains($avatar_name, '../')) $avatar_name = str_replace('../', '', $avatar_name);
+
+                        $avatar_path = 'avatars/' ;
+
+                        do {
+                            $avatar_name = bin2hex(random_bytes(8)) . $extension ;
+                        } while( file_exists( $avatar_path . $avatar_name ) ) ;
+
+                        if( ! move_uploaded_file( $_FILES['avatar']['tmp_name'], $avatar_path . $avatar_name ) )
+                            $_SESSION[ 'reg_error' ] = $reg_error['file_err'][2] ;
+                    }
                 }
             }
         }
@@ -122,18 +145,25 @@ case 'POST' :
         $salt = md5( random_bytes(16) );
         $pass = md5( $_POST['confirm'] . $salt );
         $confirm_code = bin2hex( random_bytes(3) ) ;
-        $sql = "INSERT INTO Users(`id`,`login`,`name`,`salt`,`pass`,`email`,`confirm`)
-                VALUES(UUID(),?,?,'$salt','$pass',?,'$confirm_code')" ;
+
+        $sql = "INSERT INTO Users(`id`,`login`,`name`,`salt`,`pass`,`email`,`confirm`,`avatar`)
+                VALUES(UUID(),?,?,'$salt','$pass',?,'$confirm_code',?)" ;
+
         try {
             $prep = $connection->prepare( $sql ) ;
-            $prep->execute( [ $_POST['login'], $_POST['userName'], $_POST['email'] ] ) ;
+            $prep->execute( [ 
+                $_POST['login'], 
+                $_POST['userName'], 
+                $_POST['email'],
+                isset( $avatar_name ) ? $avatar_name : null
+            ] ) ;
             $_SESSION[ 'reg_ok' ] = "Reg ok" ;
         }
         catch( PDOException $ex ) {
             $_SESSION[ 'reg_error' ] = $ex->getMessage() ;
         }
     }
-    else { // были ошибки - сохраняем в сессии все введенные значения (кроме пароля)
+    else {
         $_SESSION[ 'login' ]    = $_POST['login'] ;
         $_SESSION[ 'email' ]    = $_POST['email'] ;
         $_SESSION[ 'userName' ] = $_POST['userName'] ;

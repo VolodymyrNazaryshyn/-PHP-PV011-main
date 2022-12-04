@@ -30,7 +30,6 @@
 
                             <?php if( is_array( $_CONTEXT[ 'auth_user' ] ) ) { ?>
                                 <li><b>Hello, <?= $_CONTEXT[ 'auth_user' ][ 'name' ] ?></b></li>
-                                <?=  $_CONTEXT[ 'auth_interval' ] ?>
                                 <!-- Кнопка выхода из авторизованного режима - ссылка передающая параметр "logout" -->
                                 <li>
                                     <a href="?logout" class="header__link">

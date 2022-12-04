@@ -16,7 +16,10 @@
 
 /logs/*
 !/logs/empty
+/lib/*
 /log/*
+/www/avatars/*
+/www/ini/*
 
 # CakePHP 2
 
