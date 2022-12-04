@@ -146,3 +146,8 @@ img.logout {
 	border-radius: 50%;
 	width: 20px;
 }
+.user-avatar {
+	border-radius: 40%;
+	max-height: 40px;
+	max-width: 50px;
+}
