@@ -11,7 +11,7 @@ send_email( "volodimirnazarisin@gmail.com", // denniksam@gmail.com
     "Email verification", 
     "<b>Hello</b><br/>Type code XXXXXX to confirm email" ) ;
 
-/* Д.З. 
+/* 
 + Настроить и Реализовать отправку почтовых сообщений по SMTP протоколу.
 + При регистрации пользователя формировать и отправлять письмо с кодом подтверждения почты (confirm)
 ** сохранять в БД статус отправки письма 

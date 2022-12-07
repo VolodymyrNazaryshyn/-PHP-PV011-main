@@ -20,6 +20,7 @@
 /log/*
 /www/avatars/*
 /www/ini/*
+/www/uploads/*
 
 # CakePHP 2
 
