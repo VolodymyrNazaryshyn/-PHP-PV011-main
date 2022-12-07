@@ -17,7 +17,7 @@
     <!-- Кнопка выхода из авторизованного режима - ссылка передающая параметр "logout" -->
     <li>
         <a href="?logout" class="header__link">
-            <img class="logout" src="/img/logout.png" alt="logo">
+            <img class="logout" src="/img/logout.png" alt="logout">
         </a>
     </li>
 <?php } else {  ?>
