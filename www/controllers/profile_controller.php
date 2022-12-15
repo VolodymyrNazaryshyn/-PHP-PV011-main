@@ -1,4 +1,12 @@
 <?php
+if( $_SERVER[ 'REQUEST_METHOD' ] == 'DELETE' ) {
+    if( ! is_array( $_CONTEXT['auth_user'] ) ) { // неавторизованный запрос
+        http_response_code( 401 ) ;
+        echo "Unauthorized" ;
+        exit ;
+    }
+}
+
 if( $_SERVER[ 'REQUEST_METHOD' ] == 'PUT' ) {
     if( ! is_array( $_CONTEXT['auth_user'] ) ) { // неавторизованный запрос
         http_response_code( 401 ) ;
