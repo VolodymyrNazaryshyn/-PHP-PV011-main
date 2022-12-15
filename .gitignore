@@ -19,6 +19,7 @@
 /lib/*
 /log/*
 /www/avatars/*
+/www/images*
 /www/ini/*
 /www/uploads/*
 
