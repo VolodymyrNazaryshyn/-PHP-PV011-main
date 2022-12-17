@@ -70,3 +70,27 @@ if( $_SERVER[ 'REQUEST_METHOD' ] == 'POST' ) {
     exit ;
     // print_r( $_FILES ) ;
 }
+else if( $_SERVER[ 'REQUEST_METHOD' ] == 'GET' ) {
+    $view_data = [] ;
+    if( isset( $_SESSION[ 'add_error' ] ) ) {
+        $view_data[ 'add_error' ] = $_SESSION[ 'add_error' ] ;
+        unset( $_SESSION[ 'add_error' ] ) ;
+        // при ошибке сохраняются введенные данные - восстанавливаем
+        $view_data['login']    = $_SESSION[ 'login' ] ;
+        $view_data['email']    = $_SESSION[ 'email' ] ;
+        $view_data['userName'] = $_SESSION[ 'userName' ] ;
+    }
+    // перечень товаров
+    // Д.З. Из анализа параметра $_GET['sort'] определить способ сортировки товаров
+    // и сформировать соответствующий запрос (часть запроса) на выборку из БД
+    $sql = "SELECT * FROM Products p    ORDER BY p.add_dt DESC     LIMIT 0, 10" ;
+    try {
+        $view_data[ 'products' ] = 
+            $_CONTEXT[ 'connection' ]->query( $sql )->fetchAll( PDO::FETCH_ASSOC ) ;
+    }
+    catch( PDOException $ex ) {
+        $_CONTEXT['logger']( 'shop_controller ' . $ex->getMessage() . $sql . var_export( $params, true ) ) ;
+        $view_data[ 'add_error' ] = "Server error try later" ;
+    }
+    include "_layout.php" ;  // ~return View
+}

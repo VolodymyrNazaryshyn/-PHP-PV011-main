@@ -59,7 +59,7 @@
                 fetch('/profile', {
                     method: 'DELETE',
                 }).then( r => { 
-                    if(r.status === 200) { window.location = "/?logout" }
+                    if(r.status == 200) { window.location = "/?logout" }
                     else { console.log(r.status); r.text().then(console.log); }
                 } ) ;
             }
