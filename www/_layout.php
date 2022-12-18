@@ -38,26 +38,26 @@
         <main class="main_container">
             <?php
                 if( $path_parts[1] === '' ) $path_parts[1] = 'index' ;
-                switch( $path_parts[1] ) { // [1] - первая непустая часть (суть контроллер)
-                    case 'index'        : 
-                    case 'basics'       : 
-                    case 'fundamentals' : 
-                    case 'layout'       : 
+                switch( $path_parts[1] ) { // [1] - первая непустая часть (суть контроллер) 
+                    case 'authorization':
+                    case 'basics'       :
+                    case 'db'           :
                     case 'formdata'     :
-                    case 'db'           : 
-                    case 'authorization': 
-                    case 'email_test'   :
-                    case 'register'     : include "{$path_parts[1]}.php" ; break ;
-                    case 'shop'         :
-                    case 'profile'      : include "views/{$path_parts[1]}.php" ; break ;
-                    default             : include "404.php";
+                    case 'fundamentals' :
+                    case 'index'        :
+                    case 'layout'       :
+                    case 'profile'      :
+                    case 'register'     :
+                    case 'shop'         : include "views/components/{$path_parts[1]}.php" ; break ;
+                    case 'email_test'   : include "services/{$path_parts[1]}.php" ; break ;
+                    default             : include "views/components/404.php";
                 }
             ?>
         </main>
 
         <?php 
             $currentYear = date("Y");
-            include "footer.php" 
+            include "views/index/footer.php" 
         ?>
     </div>
 
