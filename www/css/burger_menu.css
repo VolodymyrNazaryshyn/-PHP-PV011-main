@@ -63,6 +63,9 @@ main.main_container {
 }
 
 @media (max-width: 767px) {
+	.shop-title {
+		margin-top: 0px;
+	}
 	body.lock {
 		overflow: hidden;
 	}

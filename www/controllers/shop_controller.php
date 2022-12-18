@@ -80,8 +80,6 @@ else if( $_SERVER[ 'REQUEST_METHOD' ] == 'GET' ) {
         $view_data['email']    = $_SESSION[ 'email' ] ;
         $view_data['userName'] = $_SESSION[ 'userName' ] ;
     }
-    // Д.З. Из анализа параметра $_GET['sort'] определить способ сортировки товаров
-    // и сформировать соответствующий запрос (часть запроса) на выборку из БД
     // условие сортировки
     if( isset( $_GET['sort'] ) ) {
         $view_data[ 'sort' ] = $_GET['sort'] ;
@@ -93,14 +91,47 @@ else if( $_SERVER[ 'REQUEST_METHOD' ] == 'GET' ) {
         }
     } else $order_part = "" ;
     // перечень товаров
-    $sql = "SELECT * FROM Products p    $order_part     LIMIT 0, 10" ;
-    try {
-        $view_data[ 'products' ] = 
-            $_CONTEXT[ 'connection' ]->query( $sql )->fetchAll( PDO::FETCH_ASSOC ) ;
-    }
+    // пагинация
+    // 1. сколько всего товаров
+    $sql = "SELECT COUNT(*) FROM Products " ;
+    try { $total = $_CONTEXT[ 'connection' ]->query( $sql )->fetch(PDO::FETCH_NUM)[0] ; }
     catch( PDOException $ex ) {
-        $_CONTEXT['logger']( 'shop_controller ' . $ex->getMessage() . $sql . var_export( $params, true ) ) ;
+        $_CONTEXT['logger']( 'shop_controller1 ' . $ex->getMessage() . ' ' . $sql ) ;
         $view_data[ 'add_error' ] = "Server error try later" ;
+    }
+    if( empty( $view_data[ 'add_error' ] ) ) {
+        // 2. номер страницы и кол-во элементов на странице
+        $perpage = 4 ;
+        $lastpage = ceil( $total / $perpage ) ;
+        @$page = intval( $_GET['page'] ) ?? 1 ;         //  $page  1      2      3      4       
+        if( $page < 1 ) $page = 1 ;                     //  nums   1-4    5-8    9-12   13,14,15 (всего 15)
+        if( $page > $lastpage ) $page = $lastpage ;     //  $skip  0      4      8      12
+        $skip = ( $page - 1 ) * $perpage ;
+        $view_data[ 'paginator' ] = [
+            'page' => $page,
+            'perpage' => $perpage,
+            'lastpage' => $lastpage
+        ] ;
+        $sql = "SELECT * FROM Products p    $order_part     LIMIT $skip, $perpage" ;
+        try {
+            $view_data[ 'products' ] = 
+                $_CONTEXT[ 'connection' ]->query( $sql )->fetchAll( PDO::FETCH_ASSOC ) ;
+        }
+        catch( PDOException $ex ) {
+            $_CONTEXT['logger']( 'shop_controller2 ' . $ex->getMessage() . $sql . var_export( $params, true ) ) ;
+            $view_data[ 'add_error' ] = "Server error try later" ;
+        }
     }
     include "_layout.php" ;  // ~return View
 }
+
+/*
+Пагинация (от англ. Pagination) - разбиение на страницы
+Когда контента много показывается часть и
+собирается элемент-пагинатор, переключающий страницы
+ <--  <- 1 2  ... 31 [32] 33 ... 131 132 ->  -->
+ 
+ Д.З. Скрыть форму добавления товара от всех, кроме админа
+ при отсутствии рейтинга товара выводить рейтинг "0" или "нет оценок" 
+ аналогично выводить при отсутствии описания
+*/

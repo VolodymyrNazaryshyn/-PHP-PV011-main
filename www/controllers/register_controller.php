@@ -142,7 +142,7 @@ case 'POST' :
 
     if( empty( $_SESSION[ 'reg_error' ] ) ) {
         // подключаем фукнцию отправки почты
-        @include_once "helper/send_email.php" ;
+        @include_once "services/send_email.php" ;
         if( ! function_exists( "send_email" ) ) {
             $_SESSION[ 'reg_error' ] = "Inner error" ;
         }

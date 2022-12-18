@@ -293,6 +293,9 @@ footer {
     box-shadow: 0px 0px 5px black;
 }
 /* Style for shop.php */
+.shop-title {
+    margin-top: 50px;
+}
 .product {
     box-shadow: 0 0 5px 3px lightgray; 
     display: inline-block;
@@ -370,4 +373,18 @@ footer {
 }
 .rate-area > label:active {
     position: relative;
+}
+/* Paginator */
+.paginator {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    font-size: 22px;
+}
+.paginator a, .paginator b, .paginator span {
+    margin: 0 1ex;
+}
+.paginator b {
+    font-size: 28px;
 }
