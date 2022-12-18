@@ -2,9 +2,9 @@
 Показывать товары по
 <form>
     <select name="sort">
-        <option value=1 selected>Новизне</option>
-        <option value=2>Цене</option>
-        <option value=3>Рейтингу</option>
+        <option value=1 <?= @$view_data[ 'sort' ] == 1 ? 'selected' : '' ?> >Новизне</option>
+        <option value=2 <?= @$view_data[ 'sort' ] == 2 ? 'selected' : '' ?> >Цене</option>
+        <option value=3 <?= @$view_data[ 'sort' ] == 3 ? 'selected' : '' ?> >Рейтингу</option>
     </select>
     <button>Применить</button>
 </form>

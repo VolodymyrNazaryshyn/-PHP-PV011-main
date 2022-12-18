@@ -314,7 +314,7 @@ footer {
     display: block;
     margin: auto;
     max-height: 270px;
-    width: 270px;
+    max-width: 270px;
 }
 .product h4, h5 {
     margin: 3px;

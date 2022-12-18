@@ -80,10 +80,20 @@ else if( $_SERVER[ 'REQUEST_METHOD' ] == 'GET' ) {
         $view_data['email']    = $_SESSION[ 'email' ] ;
         $view_data['userName'] = $_SESSION[ 'userName' ] ;
     }
-    // перечень товаров
     // Д.З. Из анализа параметра $_GET['sort'] определить способ сортировки товаров
     // и сформировать соответствующий запрос (часть запроса) на выборку из БД
-    $sql = "SELECT * FROM Products p    ORDER BY p.add_dt DESC     LIMIT 0, 10" ;
+    // условие сортировки
+    if( isset( $_GET['sort'] ) ) {
+        $view_data[ 'sort' ] = $_GET['sort'] ;
+        $order_part = "ORDER BY " ;
+        switch( $view_data[ 'sort' ] ) {
+            case 2  : $order_part .= 'p.price  ASC' ; break ;
+            case 3  : $order_part .= 'p.rating DESC' ; break ;
+            default : $order_part .= 'p.add_dt DESC' ;
+        }
+    } else $order_part = "" ;
+    // перечень товаров
+    $sql = "SELECT * FROM Products p    $order_part     LIMIT 0, 10" ;
     try {
         $view_data[ 'products' ] = 
             $_CONTEXT[ 'connection' ]->query( $sql )->fetchAll( PDO::FETCH_ASSOC ) ;
