@@ -28,6 +28,7 @@
                             <li><a href="/db" class="header__link">Db</a></li>
                             <li><a style="color:hotpink" href="/email_test" class="header__link">E-mail</a></li>
                             <li><a href="/register" class="header__link">Register</a></li>
+                            <li><a href="/shop" class="header__link">Shop</a></li>
 
                             <?php include "_auth.php" ?>
                         </ul>

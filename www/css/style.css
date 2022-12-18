@@ -381,6 +381,7 @@ footer {
     justify-content: center;
     align-items: center;
     font-size: 22px;
+    margin-bottom: 25px;
 }
 .paginator a, .paginator b, .paginator span {
     margin: 0 1ex;
