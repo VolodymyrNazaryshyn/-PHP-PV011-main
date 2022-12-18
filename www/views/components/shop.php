@@ -7,61 +7,100 @@
         <option value=3 <?= @$view_data[ 'sort' ] == 3 ? 'selected' : '' ?> >Рейтингу</option>
     </select>
     <button>Применить</button>
+
+    <h4>Фильтры:</h4>
+    Цена: от <input type=number name=minprice value=<?= $view_data['minprice'] ?> min=<?= $view_data['minprice'] ?>  max=<?= $view_data['maxprice'] ?> /> 
+          до <input type=number name=maxprice value=<?= $view_data['maxprice'] ?> min=<?= $view_data['minprice'] ?>  max=<?= $view_data['maxprice'] ?> /><br/>
+    <button>Применить фильтры</button>
 </form>
 
-<?php foreach( $view_data[ 'products' ] as $product ) : ?>
-<div class="product" data-id="<?=$product['id']?>" >
-    <div class="img-container" >
-        <img src="/images/<?= $product['image'] ?>" />
-    </div>
-    <h4><?= $product['name'] ?></h4>
-    <h5><?= empty($product['descr']) ? 'Нет описания' : $product['descr'] ?></h5>
-    <b><?= $product['price'] ?></b>
-    <?php if( ! empty( $product['discount'] ) ) : ?>
-        (<i><?= $product['discount'] ?></i>)
-    <?php endif ?>
-    <div class="rating-area">
-        <span>(<?= empty($product['rating']) ? '0' : $product['rating'] ?>)</span>
-        <input type="radio" id="star-5<?=$product['id']?>" name="rating<?=$product['id']?>" value="5" <?= ($product['rating'] > 4) ? 'checked' : '' ?> />
-        <label for="star-5<?=$product['id']?>" title="Grade «5»"></label>
-        <input type="radio" id="star-4<?=$product['id']?>" name="rating<?=$product['id']?>" value="4" <?= ($product['rating'] > 3 && $product['rating'] <= 4) ? 'checked' : '' ?> />
-        <label for="star-4<?=$product['id']?>" title="Grade «4»"></label>
-        <input type="radio" id="star-3<?=$product['id']?>" name="rating<?=$product['id']?>" value="3" <?= ($product['rating'] > 2 && $product['rating'] <= 3) ? 'checked' : '' ?> />
-        <label for="star-3<?=$product['id']?>" title="Grade «3»"></label>
-        <input type="radio" id="star-2<?=$product['id']?>" name="rating<?=$product['id']?>" value="2" <?= ($product['rating'] > 1 && $product['rating'] <= 2) ? 'checked' : '' ?> />
-        <label for="star-2<?=$product['id']?>" title="Grade «2»"></label>
-        <input type="radio" id="star-1<?=$product['id']?>" name="rating<?=$product['id']?>" value="1" <?= ($product['rating'] > 0 && $product['rating'] <= 1) ? 'checked' : '' ?> />
-        <label for="star-1<?=$product['id']?>" title="Grade «1»"></label>
-    </div>
-    <u>Since <?= date( "d.m.y", strtotime( $product['add_dt'] ) ) ?></u>
- </div>
-<?php endforeach ?>
-<?php
-    $href_base = ( isset( $view_data[ 'sort' ] ) ) 
-                ? "?sort=" . $view_data[ 'sort' ] . "&"
-                : "?" ;
-?>
-<div class='paginator'>
-    <?php if( $view_data['paginator']['page'] > 1 ) : ?>
-        <a href="<?=$href_base?>page=<?= $view_data['paginator']['page'] - 1 ?>">&lArr;</a>
-    <?php else : ?>
-        <span>&lArr;</span>
-    <?php endif ?>
+<form>
+    Поиск: <input name=search /> <button>найти</button>
+</form>
 
-    <?php for( $i = 1; $i <= $view_data['paginator']['lastpage']; $i++ ) : 
-        if( $i == $view_data['paginator']['page'] ) : ?>
-            <b><?= $i ?></b>
-        <?php else : ?>
-            <a href="<?=$href_base?>page=<?= $i ?>"><?= $i ?></a> 
+<h3>Всего <?= $view_data[ 'paginator' ][ 'total' ] ?> позиций </h3>
+<h4>
+    <?php if( isset( $view_data[ 'filters' ][ 'minprice' ] ) ) : ?>
+        Цена от  <?= $view_data[ 'filters' ][ 'minprice' ] ?> <br/>
+    <?php endif ?>
+    <?php if( isset( $view_data[ 'filters' ][ 'maxprice' ] ) ) : ?>
+        Цена до  <?= $view_data[ 'filters' ][ 'maxprice' ] ?> <br/>
+    <?php endif ?>
+    <?php if( isset( $view_data[ 'search' ] ) ) : ?>
+        Результат поиска " <?= $view_data[ 'search' ] ?> " <br/>
+    <?php endif ?>
+    <a href="/shop">Сбросить все фильтры</a>
+</h4>
+<?php if( empty( $view_data[ 'products' ] ) ) : ?>
+    <p>
+        Нет товаров для отображения
+    <p>
+<?php else : foreach( $view_data[ 'products' ] as $product ) : ?>
+    <div class="product" data-id="<?=$product['id']?>" >
+        <div class="img-container" >
+            <img src="/images/<?= $product['image'] ?>" />
+        </div>
+        <h4><?= $product['name'] ?></h4>
+        <h5><?= empty($product['descr']) ? 'Нет описания' : $product['descr'] ?></h5>
+        <b><?= $product['price'] ?></b>
+        <?php if( ! empty( $product['discount'] ) ) : ?>
+            (<i><?= $product['discount'] ?></i>)
         <?php endif ?>
-    <?php endfor ?>
+        <div class="rating-area">
+            <span>(<?= empty($product['rating']) ? '0' : $product['rating'] ?>)</span>
+            <input type="radio" id="star-5<?=$product['id']?>" name="rating<?=$product['id']?>" value="5" <?= ($product['rating'] > 4) ? 'checked' : '' ?> />
+            <label for="star-5<?=$product['id']?>" title="Grade «5»"></label>
+            <input type="radio" id="star-4<?=$product['id']?>" name="rating<?=$product['id']?>" value="4" <?= ($product['rating'] > 3 && $product['rating'] <= 4) ? 'checked' : '' ?> />
+            <label for="star-4<?=$product['id']?>" title="Grade «4»"></label>
+            <input type="radio" id="star-3<?=$product['id']?>" name="rating<?=$product['id']?>" value="3" <?= ($product['rating'] > 2 && $product['rating'] <= 3) ? 'checked' : '' ?> />
+            <label for="star-3<?=$product['id']?>" title="Grade «3»"></label>
+            <input type="radio" id="star-2<?=$product['id']?>" name="rating<?=$product['id']?>" value="2" <?= ($product['rating'] > 1 && $product['rating'] <= 2) ? 'checked' : '' ?> />
+            <label for="star-2<?=$product['id']?>" title="Grade «2»"></label>
+            <input type="radio" id="star-1<?=$product['id']?>" name="rating<?=$product['id']?>" value="1" <?= ($product['rating'] <= 1) ? 'checked' : '' ?> />
+            <label for="star-1<?=$product['id']?>" title="Grade «1»"></label>
+        </div>
+        <u>Since <?= date( "d.m.y", strtotime( $product['add_dt'] ) ) ?></u>
+    </div>
+<?php endforeach ; endif ; ?>
+<?php
+    $href_base = "?"
+    . ( ( isset( $view_data[ 'sort' ] ) ) 
+            ? "sort=" . $view_data[ 'sort' ] . "&"
+            : "" )
+    . ( ( isset( $view_data[ 'filters' ][ 'minprice' ] ) ) 
+            ? "minprice=" . $view_data[ 'filters' ][ 'minprice' ] . "&"
+            : "" )
+    . ( ( isset( $view_data[ 'filters' ][ 'maxprice' ] ) ) 
+            ? "maxprice=" . $view_data[ 'filters' ][ 'maxprice' ] . "&"
+            : "" ) 
+    . ( ( isset( $view_data[ 'search' ] ) ) 
+            ? "search=" . $view_data[ 'search' ] . "&"
+            : "" ) 
+    ;
+?>
+<?php if( ! empty( $view_data[ 'products' ] && $view_data[ 'paginator' ][ 'total' ] > $view_data[ 'paginator' ][ 'perpage' ] ) ) : ?>
+    <div class='paginator'>
+        <?php if( $view_data['paginator']['page'] > 1 ) : ?>
+            <a href="<?=$href_base?>page=<?= $view_data['paginator']['page'] - 1 ?>">&lArr;</a>
+        <?php else : ?>
+            <span>&lArr;</span>
+        <?php endif ?>
 
-    <?php if($view_data['paginator']['page'] < $view_data['paginator']['lastpage']) : ?>
-        <a href="<?=$href_base?>page=<?= $view_data['paginator']['page'] + 1 ?>">&rArr;</a>
-    <?php else : ?>
-        <span>&rArr;</span>
-    <?php endif ?>
-</div>
+        <?php for( $i = 1; $i <= $view_data['paginator']['lastpage']; $i++ ) : 
+            if( $i == $view_data['paginator']['page'] ) : ?>
+                <b><?= $i ?></b>
+            <?php else : ?>
+                <a href="<?=$href_base?>page=<?= $i ?>"><?= $i ?></a> 
+            <?php endif ?>
+        <?php endfor ?>
+
+        <?php if($view_data['paginator']['page'] < $view_data['paginator']['lastpage']) : ?>
+            <a href="<?=$href_base?>page=<?= $view_data['paginator']['page'] + 1 ?>">&rArr;</a>
+        <?php else : ?>
+            <span>&rArr;</span>
+        <?php endif ?>
+    </div>
+<?php endif ; ?>
 
 <?php if( ! empty($_CONTEXT['auth_user']) && $_CONTEXT['auth_user']['id'] == 'e8a94350-69c0-11ed-9521-3c7c3fbb1a48' ) : ?>
     <form method="post" enctype="multipart/form-data">
