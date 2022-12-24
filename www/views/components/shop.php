@@ -22,8 +22,20 @@
             <?= $grp['name'] ?> (<?= $grp['cnt'] ?>) 
         </label><br/>
     <?php endforeach ?>
+    <script>
+        function uncheck() {
+            let uncheck = document.querySelectorAll('input[type=checkbox]');
+            let count = 0;
+            for(let i = 0; i < uncheck.length; i++)
+                if( uncheck[i].value == 'grp' && uncheck[i].checked === true) count++;
+            
+            for(let i = 0; i < uncheck.length; i++)
+                if( uncheck[i].value == 'grp' && count === <?= count( $view_data[ 'product_groups' ] ) ?> )
+                    uncheck[i].checked = false;
+        }
+    </script>
     <br/>
-    <button>Применить фильтры</button>
+    <button onclick="uncheck()">Применить фильтры</button>
 </form>
 <br/>
 <form>
@@ -42,8 +54,8 @@
     <?php if( isset( $view_data[ 'search' ] ) ) : ?>
         Результат поиска " <?= $view_data[ 'search' ] ?> " <br/>
     <?php endif ?>
-    <?php if( ! empty( $filters[ 'product_groups_name' ] ) ) : ?>
-        Группы товаров: <?= implode( ', ', $filters[ 'product_groups_name' ] ) ?>
+    <?php if( ! empty( $filters[ 'product_groups_name' ] ) and count( $filters[ 'product_groups_id'] ) !== count( $view_data[ 'product_groups' ] ) ) : ?>
+        Группы товаров: <?= implode( ', ', $filters[ 'product_groups_name' ] ) ?> <br/>
     <?php endif ?>
     <br/><a href="/shop">Сбросить все фильтры</a>
 </h4>
