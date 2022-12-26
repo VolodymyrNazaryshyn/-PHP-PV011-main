@@ -9,8 +9,8 @@
     <button>Применить</button>
 
     <h4>Фильтры:</h4>
-    Цена: от <input type=number name=minprice value=<?= $view_data['minprice'] ?> min=<?= $view_data['minprice'] ?>  max=<?= $view_data['maxprice'] ?> /> 
-          до <input type=number name=maxprice value=<?= $view_data['maxprice'] ?> min=<?= $view_data['minprice'] ?>  max=<?= $view_data['maxprice'] ?> /><br/>
+    Цена: от <input type=number name=minprice value=<?= isset($view_data['filters']['minprice']) ? $view_data['filters']['minprice'] : $view_data['minprice'] ?> min=<?= $view_data['minprice'] ?>  max=<?= $view_data['maxprice'] ?> /> 
+          до <input type=number name=maxprice value=<?= isset($view_data['filters']['maxprice']) ? $view_data['filters']['maxprice'] : $view_data['maxprice'] ?> min=<?= $view_data['minprice'] ?>  max=<?= $view_data['maxprice'] ?> /><br/>
     <!-- *********************** ГРУППЫ ТОВАРОВ ************************* -->
     <?php foreach( $view_data[ 'product_groups' ] as $grp ) : ?>
         <label>
